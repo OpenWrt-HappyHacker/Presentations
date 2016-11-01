@@ -1,5 +1,7 @@
 # Guerrilla Tor
-AlligatorCon Poland 2016 presentation slides and demo videos.
+Presentation slides and demo videos for:
+ * AlligatorCon Poland 2016
+ * Hack & Beers Madrid 2016
 
 You can also find the source code to the build system here: https://github.com/OpenWrt-HappyHacker/vagrant-happyhacker
 
