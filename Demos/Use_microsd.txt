@@ -1,0 +1,128 @@
+
+--------------------
+Identificate device
+---------------------
+Steps:
+1) conect microsd to pc or zsun with base hh firmware.
+2) Execute as root in a terminal dmesg
+3) Look in the las entries for [sdX], X will be a letter:
+...
+[ 4866.246420] sd 6:0:0:0: [sdc] 31116288 512-byte logical blocks: (15.9 GB/14.8 GiB)
+[ 4866.247704] sd 6:0:0:0: [sdc] Write Protect is off
+[ 4866.247711] sd 6:0:0:0: [sdc] Mode Sense: 21 00 00 00
+[ 4866.248970] sd 6:0:0:0: [sdc] Write cache: disabled, read cache: enabled, doesn't support DPO or FUA
+
+4) sdc is the devices in my case.
+
+-----------------
+First microsd use
+------------------
+Tasks:
+    1) Create partitions (ZSUN or Linux/nix with microsd card reader)
+    2) Create filesystem (ZSUN or Linux/nix with microsd card reader)
+    3) Mount temporally as directory in rootfs (data store only) (ZSUN only)
+    4) Mount automatically as directory in rootfs (data store only) (ZSUN only)
+    5) Use has rootfs directly (used in demos and POC) (ZSUN only)
+    
+- 1 Create partions, steps:
+    1.1) Execute as root fdisk /dev/sdc in my case, identificate first what devices is assinged by your system.
+    1.2) In fdisk promt press o + enter, to create a new partion table (MBR)
+    1.3) In fdisk promt press n + enter, to create a new partion
+    1.4) In fdisk promt press p + enter, to choose primary partion type
+    1.5) In fdisk promt press 1 + enter, to choose partion number 1, this will be our data partition in microsd
+    1.6) In fdisk promt press enter, to choose default first sector for partion 1
+    1.7A)In fdisk promt press enter, to choose use all storage space available.
+    1.7B)In fdisk promt enter the result of (default value - 2×1024×256) in my case 31116287 - 524288 = 30591999 and press enter, to choose use all space available less 256MB reserved to swap.
+    1.8A) If you don't want to use swap and do step 1.7A in fdisk promt type w to write changes to devices and exit fdisk
+    1.8B) If you do step 1.7B and you want to use swap, in fdisk promt press n + enter, to create new partion
+    1.9B) If you do step 1.7B and you want to use swap, in fdisk promt press p + enter, to choose primary partion type
+    1.10B) If you do step 1.7B and you want to use swap, in fdisk promt press 2 + enter, to choose partion number 2, this will be our swap partition in microsd
+    1.11B) If you do step 1.7B and you want to use swap, in fdisk promt press  enter, to choose default first sector
+    1.12B) If you do step 1.7B and you want to use swap, in fdisk promt press  enter, to use all space available in devices
+    1.13B) If you do step 1.7B and you want to use swap, in fdisk promt type w to write changes to devices and exit fdisk
+
+- 2 Create filesystem, steps:
+    2.1) To use ext4, execute as root in a shell mkfs.ext4 /dev/sdc1 to create in sdc devices partition 1 an ext4 filesystem
+    2.1A) To use fat, execute as root in a shell mkfs.vfat /dev/sdc1 to create in sdc devices partition 1 a vfat filesystem
+    2.2) If you want to use swap and you have one partition reserved step 1.7B, execute as root mkswap /dev/sdc2 to create in sdc devices partition 2 a swap space.
+
+- 3  Mount temporally as directory  
+    3.1) Create mount point, execute as root mkdir -p /mnt/microsd
+    3.2) Mount microsd, execute as root mount /dev/sdc1 /mnt/microsd to mount sdc device partion 1 in path /mnt/microsd
+
+- 4 Mount automatically as directory
+    3.1) Create mount point, execute as root mkdir -p /mnt/microsd
+    3.2) Edit /etc/config/fstab to looks like this:
+
+-- BEGIN --
+
+config 'global'
+        option  anon_swap       '0'
+        option  anon_mount      '0'
+        option  auto_swap       '1'
+        option  auto_mount      '1'
+        option  delay_root      '5'
+        option  check_fs        '0'
+
+config 'mount'
+        option  target  '/mnt/microsd'        
+	option  device   '/dev/sdc1'        
+	option  enabled '1' 
+
+-- END --
+
+- 5 Use microsd as rootfs (ext4 filesystems only)
+    5.1) Create mount point, execute as root mkdir -p /mnt/usbdisk
+    5.2) Mount microsd, execute as root mount -t ext4 /dev/sdc1 /mnt/usbdisk to mount sdc device partion 1 in path /mnt/usbdisk
+    5.3) Use tar.gz rootfs, as root execute tar -xzvf trs_OK_POC_FAQIN.tar.gz -C ./mnt/microsd , extract rootfs contained in the tar.gz file into microsd mount point 
+    5.3A) Copy firmware filesystem layout as rootfs, execute as root the following steps:
+        mkdir -p /tmp/fsroot@usbdisk
+        mount --bind / /tmp/fsroot@usbdisk
+        tar -C /tmp/fsroot@usbdisk -cvf - . | tar -C /mnt/usbdisk -xf -
+        umount /tmp/fsroot@usbdisk
+        umount /mnt/usbdisk
+    5.4) Edit /etc/config/fstab to looks like this:
+
+-- BEGIN --
+
+config 'global'
+        option  anon_swap       '0'
+        option  anon_mount      '0'
+        option  auto_swap       '1'
+        option  auto_mount      '1'
+        option  delay_root      '5'
+        option  check_fs        '0'
+
+config 'mount'
+        option  target  '/'        
+	option  device   '/dev/sdc1'        
+	option  enabled '1' 
+
+-- END --
+    5.4A) If you choose to use swap edit /etc/config/fstab to looks like this:
+
+-- BEGIN --
+
+config 'global'
+        option  anon_swap       '0'
+        option  anon_mount      '0'
+        option  auto_swap       '1'
+        option  auto_mount      '1'
+        option  delay_root      '5'
+        option  check_fs        '0'
+
+config 'mount'
+    option  target  '/'        
+	option  device   '/dev/sdc1'        
+	option  enabled '1' 
+
+config 'swap'
+	option  device   '/dev/sdc2'        
+    option  enabled '1'
+
+
+-- END --
+        5.5) Execute as root, /etc/init.d/fstab enable , to enable fstab in bootime
+        5.6) Execute as root, reboot , to apply changes in fstab configurations
+        5.7) Execute as root, df -h , to check than / mount point are in microsd (The space available will be more than 32MB)
+        

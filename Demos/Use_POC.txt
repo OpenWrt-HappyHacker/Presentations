@@ -1,0 +1,9 @@
+Basic configuration:
+
+1) Add new wifi client configuration:
+    edit /etc/wm/wifisdb.csv
+    or use SSID:test KEY:"this is a test" in you wifi AP.
+ 
+    
+2) change ssh password
+TODO: Add command to modificate passwd directly
