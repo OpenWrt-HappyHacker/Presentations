@@ -1,0 +1,17 @@
+5d2bfdf8a0f09ae4380aa1999658f0f7 *openwrt-ar71xx-generic-ZSUNSDREADER-rootfs.tar.gz
+f5b0a9563e047e2d9698b0aaf99a6035 *openwrt-ar71xx-generic-root.jffs2-128k
+40fe29f618e2a6922c7215ddc789037c *openwrt-ar71xx-generic-root.jffs2-64k
+e3ac44be7aac6414a5dcea9fa06038db *openwrt-ar71xx-generic-root.squashfs
+c11088724b407fbd88904ae90cdae1d2 *openwrt-ar71xx-generic-root.squashfs-64k
+a4ef218ed0ac50969f92b952964fc171 *openwrt-ar71xx-generic-uImage-gzip.bin
+3e99b0f848291518d6f1d4537e97c6af *openwrt-ar71xx-generic-uImage-lzma.bin
+92ed9f0eb40ebddfe75cfe27323e4d67 *openwrt-ar71xx-generic-vmlinux-lzma.elf
+ab0684cfc0ca54f4c67b580594c8e185 *openwrt-ar71xx-generic-vmlinux.bin
+91d433345148101dee330ea3ea905004 *openwrt-ar71xx-generic-vmlinux.elf
+85b4f25c7e9a8ca222acc4223fbf548e *openwrt-ar71xx-generic-vmlinux.gz
+100a9a8849d6892cfe80af07daac4e3c *openwrt-ar71xx-generic-vmlinux.lzma
+ae9cb60e77430dced1ede1be24075fa3 *openwrt-ar71xx-generic-zsun-sdreader-jffs2-sysupgrade.bin
+46322b773e10b9a7aab52e7c2c8e8499 *openwrt-ar71xx-generic-zsun-sdreader-kernel.bin
+40fe29f618e2a6922c7215ddc789037c *openwrt-ar71xx-generic-zsun-sdreader-rootfs-jffs2.bin
+34e781420c607f977d8c160ae028a18e *openwrt-ar71xx-generic-zsun-sdreader-rootfs-squashfs.bin
+e7c9f8d5c7cad85367d962407dd5eb55 *openwrt-ar71xx-generic-zsun-sdreader-squashfs-sysupgrade.bin
