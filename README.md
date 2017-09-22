@@ -6,6 +6,6 @@ Presentation slides and demo videos for:
  * FAQin Congress, Madrid 2017
  * Lacon 2k17, Undisclosed location :) 2017
 
-You can also find the source code to the build system here: https://github.com/OpenWrt-HappyHacker/vagrant-happyhacker
+You can also find the source code to the build system here: https://github.com/OpenWrt-HappyHacker/happyhacker-builder
 
 And the Wi-Fi Manager here: https://github.com/OpenWrt-HappyHacker/wm
